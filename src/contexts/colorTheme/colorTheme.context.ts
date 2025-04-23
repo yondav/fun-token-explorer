@@ -23,5 +23,10 @@ export const ColorThemeContext =
   createContext<ColorThemeContextState>(initialState);
 
 export function useColorTheme() {
-  return useContext(ColorThemeContext);
+  const ctx = useContext(ColorThemeContext);
+
+  if (!ctx)
+    throw new Error('useColorTheme must be used within a ThemeProvider');
+
+  return ctx;
 }
