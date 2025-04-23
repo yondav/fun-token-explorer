@@ -1,6 +1,6 @@
 import { IoMoonOutline, IoSunnyOutline } from 'react-icons/io5';
 
-import { useColorTheme } from '../../contexts/context.ColorTheme';
+import { useColorTheme } from '../../contexts/colorTheme';
 
 export default function ToolBar() {
   const { theme, toggleTheme } = useColorTheme();

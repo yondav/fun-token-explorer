@@ -10,7 +10,7 @@ import {
   initialState,
   ColorThemeContext,
   type ColorTheme,
-} from './ColorTheme.context';
+} from './colorTheme.context';
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<ColorTheme>(initialState.theme);
