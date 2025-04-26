@@ -1,3 +1,3 @@
-export { default as BaseLayout } from './base';
-export { default as ErrorView } from './error';
-export { default as ExplorerView } from './explorer';
+export { default as BaseLayout } from './BaseLayout';
+export { default as ErrorView } from './ErrorView';
+export { default as ExplorerView } from './ExplorerView';

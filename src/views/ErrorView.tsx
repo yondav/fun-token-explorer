@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function ErrorView() {
   return (
     <>
@@ -5,6 +7,9 @@ export default function ErrorView() {
         404
       </h1>
       <p>Oops! The page you&apos;re looking for doesn&apos;t exist. 🫠</p>
+      <Link to='/explorer' className='btn'>
+        Back to token explorer
+      </Link>
     </>
   );
 }
