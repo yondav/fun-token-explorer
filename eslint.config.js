@@ -65,6 +65,7 @@ export default [
 
       // Misc
       'no-console': ['warn', { allow: ['error'] }],
+      'no-unused-vars': 'off',
 
       // Import order
       'import/order': [
