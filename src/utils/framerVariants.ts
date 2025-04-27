@@ -1,5 +1,6 @@
 import type { Variants } from 'framer-motion';
 
+/** Go-to parent animation */
 export const fadeUpStagger: Variants = {
   initial: { opacity: 0, y: 20 },
   animate: {
@@ -12,6 +13,7 @@ export const fadeUpStagger: Variants = {
   },
 };
 
+/** Go-to child animation */
 export const staggerContainer: Variants = {
   initial: { opacity: 0 },
   animate: {
