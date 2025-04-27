@@ -118,5 +118,6 @@ export const setFocusedToken =
 export const setRealTime =
   (dispatch: Dispatch<RealTimeAction>) =>
   (payload: RealTimeAction['payload']) => {
+    window.localStorage.setItem('realTime', JSON.stringify(payload));
     dispatch({ type: SwapTokenActionTypes.SET_REAL_TIME, payload });
   };

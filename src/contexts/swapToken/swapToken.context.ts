@@ -6,6 +6,8 @@ import type {
   SwapContextStateActions,
 } from './swapToken.types';
 
+const browserPrefRealTime = window.localStorage.getItem('realTime');
+
 /**
  * The default state for the swap context.
  * Preselects USDC as the source and ETH as the target, with a $100 default amount.
@@ -22,7 +24,7 @@ export const initialState: SwapContextState = {
   targetAmount: { value: null, display: '0' },
   inputType: 'usd',
   focusedToken: 'source',
-  realTime: false,
+  realTime: browserPrefRealTime ? JSON.parse(browserPrefRealTime) : false,
 };
 
 export const SwapContext = createContext<SwapContextState>(initialState);
