@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 import { BaseLayout, ErrorView, ExplorerView } from './views';
+import ErrorBoundary from './views/ErrorBoundary';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,5 +20,9 @@ const router = createBrowserRouter(
 );
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ErrorBoundary>
+      <RouterProvider router={router} />
+    </ErrorBoundary>
+  );
 }
