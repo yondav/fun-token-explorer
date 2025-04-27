@@ -2,13 +2,16 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import App from './App.tsx';
-import { ThemeProvider } from './contexts/colorTheme/index.ts';
+import { SwapProvider } from './contexts/swapToken/swapToken.provider.tsx';
+import { UiSettingsProvider } from './contexts/uiSettings/index.ts';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
+    <UiSettingsProvider>
+      <SwapProvider>
+        <App />
+      </SwapProvider>
+    </UiSettingsProvider>
   </StrictMode>
 );
