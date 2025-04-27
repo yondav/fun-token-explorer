@@ -6,23 +6,45 @@ import type {
   SwapContextStateActions,
 } from './swapToken.types';
 
+/**
+ * The default state for the swap context.
+ * Preselects USDC as the source and ETH as the target, with a $100 default amount.
+ * This state will be overridden by the provider once data loads.
+ */
 export const initialState: SwapContextState = {
   sourceToken: SUPPORTED_TOKENS.USDC,
   targetToken: SUPPORTED_TOKENS.ETH,
-  usdAmount: 100,
+  usdAmount: { value: 100, display: '$100.00' },
   sourceData: null,
   targetData: null,
   loading: true,
-  sourceAmount: null,
-  targetAmount: null,
+  sourceAmount: { value: null, display: '0' },
+  targetAmount: { value: null, display: '0' },
+  inputType: 'usd',
+  focusedToken: 'source',
 };
 
+/**
+ * The primary context for exposing swap state throughout the app.
+ */
 export const SwapContext = createContext<SwapContextState>(initialState);
 
+/**
+ * Separate context for exposing mutation actions that update the swap state.
+ * This prevents unnecessary rerenders when only dispatch methods are needed.
+ */
 export const SwapContextActions = createContext<
   SwapContextStateActions | undefined
 >(undefined);
 
+/**
+ * Hook for consuming both the swap state and dispatch actions.
+ * Must be used within a `<SwapProvider>` or it will throw an error.
+ *
+ * @returns An object containing:
+ * - `state`: the current swap context state
+ * - `actions`: setter functions for modifying the swap inputs
+ */
 export function useSwapContext(): {
   state: SwapContextState;
   actions: SwapContextStateActions;
