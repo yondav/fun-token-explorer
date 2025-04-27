@@ -19,6 +19,12 @@ const router = createBrowserRouter(
   )
 );
 
+/**
+ * Root application component.
+ *
+ * Sets up the router and global error boundary to ensure
+ * safe routing and graceful fallback for unhandled errors.
+ */
 export default function App() {
   return (
     <ErrorBoundary>
