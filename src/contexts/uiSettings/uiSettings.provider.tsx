@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 
 import {
   browserPref,
@@ -7,6 +13,14 @@ import {
   type ColorTheme,
 } from './uiSettings.context';
 
+/**
+ * React Provider component for managing UI Settings.
+ *
+ * Handles:
+ * - Theme switching (light/dark/system)
+ * - Side drawer toggle state
+ *
+ */
 export default function UiSettingsProvider({
   children,
 }: {
@@ -22,20 +36,23 @@ export default function UiSettingsProvider({
     window.localStorage.setItem('theme', theme);
   }, [theme]);
 
+  const toggleTheme = useCallback((theme?: ColorTheme) => {
+    if (!theme) setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+    else setTheme(theme);
+  }, []);
+
+  const toggleSideDrawer = useCallback(() => {
+    setSideDrawer(prev => !prev);
+  }, []);
+
   const value = useMemo(
     () => ({
       theme,
-      toggleTheme: (theme?: ColorTheme) => {
-        if (!theme) setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
-        else setTheme(theme);
-      },
-
+      toggleTheme,
       sideDrawer,
-      toggleSideDrawer: () => {
-        setSideDrawer(prev => !prev);
-      },
+      toggleSideDrawer,
     }),
-    [sideDrawer, theme]
+    [sideDrawer, theme, toggleSideDrawer, toggleTheme]
   );
 
   return (
