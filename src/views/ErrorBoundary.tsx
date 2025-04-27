@@ -31,7 +31,8 @@ export default function ErrorBoundary({ children }: ErrorBoundaryProps) {
         // Future: send this to Sentry or LogRocket or your custom logger
       }}
       onReset={() => {
-        // Custom logic on retry if needed — for now it just resets
+        // Custom logic on retry if needed — for now it just reloads the page
+        window.location.reload();
       }}
     >
       {children}
