@@ -1,5 +1,6 @@
 import { calculations, formatAmount } from '../../utils';
 
+import { FALLBACK_DECIMAL_PRECISION } from './swapToken.constants';
 import {
   SwapTokenActionTypes,
   type SwapContextState,
@@ -8,11 +9,10 @@ import {
 
 /**
  * Reducer function for managing swap context state.
- * Handles updates to selected tokens, API-resolved token metadata,
- * USD input, loading flags, and derived token amounts.
  *
- * This reducer is pure and synchronous, with side effects (e.g. API calls)
- * handled externally in the context provider.
+ * Handles updates to tokens, input amounts (USD, source, target),
+ * metadata from the API, and loading flags.
+ * Automatically recalculates dependent amounts based on the active input type.
  *
  * @param state - The current state of the swap context
  * @param action - The dispatched action to update part of the state
@@ -25,6 +25,9 @@ export function swapTokenReducer(
   switch (type) {
     case SwapTokenActionTypes.SET_LOADING:
       return { ...state, loading: payload };
+
+    case SwapTokenActionTypes.SET_REAL_TIME:
+      return { ...state, realTime: payload };
 
     case SwapTokenActionTypes.SET_INPUT_TYPE:
       return { ...state, inputType: payload };
@@ -70,7 +73,7 @@ export function swapTokenReducer(
         ),
         sourceAmount: formatAmount(
           payload,
-          state.sourceData?.decimals ?? 6,
+          state.sourceData?.decimals ?? FALLBACK_DECIMAL_PRECISION,
           state.sourceData?.symbol
         ),
         targetAmount: calculations.targetFromSource(
@@ -91,7 +94,7 @@ export function swapTokenReducer(
         ),
         targetAmount: formatAmount(
           payload,
-          state.targetData?.decimals ?? 6,
+          state.targetData?.decimals ?? FALLBACK_DECIMAL_PRECISION,
           state.targetData?.symbol
         ),
         sourceAmount: calculations.sourceFromTarget(

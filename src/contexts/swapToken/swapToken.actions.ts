@@ -4,6 +4,7 @@ import type {
   FocusedTokenAction,
   InputTypeAction,
   LoadingAction,
+  RealTimeAction,
   SourceAmountAction,
   SourceDataAction,
   SourceTokenAction,
@@ -103,10 +104,19 @@ export const setInputType =
   };
 
 /**
- * Sets the input type we are tracking to calculate all values.
+ * Sets the token card that is currently in focus.
  */
 export const setFocusedToken =
   (dispatch: Dispatch<FocusedTokenAction>) =>
   (payload: FocusedTokenAction['payload']) => {
     dispatch({ type: SwapTokenActionTypes.SET_FOCUSED_TOKEN, payload });
+  };
+
+/**
+ * Sets user preference for real time token updates.
+ */
+export const setRealTime =
+  (dispatch: Dispatch<RealTimeAction>) =>
+  (payload: RealTimeAction['payload']) => {
+    dispatch({ type: SwapTokenActionTypes.SET_REAL_TIME, payload });
   };

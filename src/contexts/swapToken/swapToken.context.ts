@@ -22,11 +22,9 @@ export const initialState: SwapContextState = {
   targetAmount: { value: null, display: '0' },
   inputType: 'usd',
   focusedToken: 'source',
+  realTime: false,
 };
 
-/**
- * The primary context for exposing swap state throughout the app.
- */
 export const SwapContext = createContext<SwapContextState>(initialState);
 
 /**
