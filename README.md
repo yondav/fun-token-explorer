@@ -15,7 +15,7 @@
 </div>
 <br />
 
-[deploy]("https://fun-token-explorer.vercel.app/explorer")
+[deploy](https://fun-token-explorer.vercel.app/explorer)
 
 <!-- Table of Contents -->
 
