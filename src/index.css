@@ -149,6 +149,10 @@
   @apply bg-base-200! border! border-error!;
 }
 
+@utility subtitle {
+  @apply text-sm text-neutral-500 text-center italic;
+}
+
 @utility wrapper {
   @apply min-h-screen flex flex-col justify-between p-4;
 
@@ -202,8 +206,16 @@
       @apply text-sm mb-2;
     }
   }
-
 }
 
-@layer components {
+@utility card-token {
+  @apply p-4 flex flex-col items-start justify-between bg-base-100 border border-base-300 shadow-none w-xs sm:w-sm md:w-md min-h-40 cursor-pointer;
+}
+
+@utility card-token-focused {
+  @apply bg-base-content/5 border-0!;
+}
+
+@utility input-card-token {
+  @apply w-full h-16 px-0 bg-transparent border-none shadow-none! outline-none!;
 }
