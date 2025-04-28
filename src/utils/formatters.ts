@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { parseUnits, formatUnits } from 'viem';
 
 /**
@@ -33,7 +34,10 @@ export function formatAmount(
         : display,
     };
   } catch (err) {
-    console.error(err);
+    const error = err as Error;
+    toast.error(`Failed to format ${symbol} amount.`, {
+      id: error?.name,
+    });
     return {
       value: 0,
       display: symbol === '$' ? `${symbol}0` : `0 ${symbol}`,
