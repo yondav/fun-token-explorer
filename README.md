@@ -15,9 +15,7 @@
 </div>
 <br />
 
-[repo]("https://github.com/yondav/fun-token-explorer")
-
-[deploy]()
+[deploy]("https://fun-token-explorer.vercel.app/explorer")
 
 <!-- Table of Contents -->
 
