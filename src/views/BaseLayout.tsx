@@ -1,17 +1,42 @@
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
+import { Toaster } from 'react-hot-toast';
+import { TbAlertSquareRounded } from 'react-icons/tb';
 import { Link, Outlet } from 'react-router-dom';
 
 import { FunLogo, SideDrawer } from '../components';
 import { useUiSettings } from '../contexts/uiSettings';
 
+/**
+ * `BaseLayout` serves as the root layout for all routes.
+ *
+ * It handles:
+ * - Global navigation with a logo link and a side drawer toggle.
+ * - Responsive layout adjustments based on the side drawer state.
+ * - Global toast notifications via `react-hot-toast`.
+ *
+ * Children routes are rendered inside the `<Outlet />`.
+ */
 export default function BaseLayout() {
   const { sideDrawer } = useUiSettings();
 
   return (
     <div className='relative'>
-      <div className='min-h-screen flex flex-col justify-between bg-base-200 pt-4 px-4 2xl:px-0'>
-        <nav className='w-full flex justify-between items-center z-50'>
+      <Toaster
+        position='bottom-right'
+        toastOptions={{
+          className: 'alert!',
+          duration: 3000,
+          removeDelay: 500,
+
+          error: {
+            className: 'alert! alert-error!',
+            icon: <TbAlertSquareRounded className='text-error' size={24} />,
+          },
+        }}
+      />
+      <div className='wrapper'>
+        <nav aria-label='Primary navigation'>
           <Link to='/'>
             <FunLogo />
           </Link>
@@ -19,15 +44,9 @@ export default function BaseLayout() {
         </nav>
 
         <motion.main
-          layout='position'
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
-          className={classNames(
-            'max-w-7xl h-full my-auto flex flex-col justify-center items-center gap-16 mx-auto lg:z-50',
-            {
-              'lg:-translate-x-40 xl:translate-x-0': sideDrawer,
-              'mx-auto': !sideDrawer,
-            }
-          )}
+          layout
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className={classNames({ 'lg:-left-44 2xl:left-auto': sideDrawer })}
         >
           <Outlet />
         </motion.main>

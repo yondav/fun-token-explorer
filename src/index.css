@@ -1,10 +1,18 @@
 @import 'tailwindcss';
 
+
 @plugin "daisyui" {
   themes:
-    light --default,
-    dark --prefers-dark,
-    cupcake;
+  light --default,
+  dark --prefers-dark,
+  cupcake;
+
+  @theme {
+    --font-heading: 'Roboto', sans-serif;
+    --font-display: 'Nunito', sans-serif;
+    --leading-full: 100%;
+    --leading-plus: 140%;
+  }
 }
 
 @plugin "daisyui/theme" {
@@ -12,9 +20,9 @@
   default: false;
   prefersdark: true;
   color-scheme: 'dark';
-  --color-base-100: oklch(0 0 0);
-  --color-base-200: oklch(0.165 0 0);
-  --color-base-300: oklch(0.21 0 0);
+  --color-base-100: oklch(0.19 0 0);
+  --color-base-200: oklch(0 0 0);
+  --color-base-300: oklab(0.31 0 0);
   --color-base-content: oklch(1 0 0);
   --color-primary: oklch(59% 0.249 0.584);
   --color-primary-content: oklch(96% 0.018 272.314);
@@ -47,10 +55,10 @@
   default: true;
   prefersdark: false;
   color-scheme: 'light';
-  --color-base-100: oklch(0.965 0 0);
+  --color-base-100: oklch(0.97 0 0);
   --color-base-200: oklch(1 0 0);
-  --color-base-300: oklch(0.93 0 0);
-  --color-base-content: oklch(0 0 0);
+  --color-base-300: oklab(0.85 0 0);
+  --color-base-content: oklch(0.1 0 0);
   --color-primary: oklch(59% 0.249 0.584);
   --color-primary-content: oklch(93% 0.034 272.788);
   --color-secondary: oklch(77% 0.152 181.912);
@@ -77,23 +85,85 @@
   --noise: 0;
 }
 
-html,
-body {
-  font-family: 'Nunito', sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+@layer base {
+  html {
+    @apply font-display font-medium text-base leading-full;
+    font-optical-sizing: auto;
+  }
+
+  body {
+    @apply bg-base-200 min-h-screen transition-colors ease-linear duration-300;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-semibold leading-plus;
+    font-optical-sizing: auto;
+    font-variation-settings: 'wdth' 100;
+  }
+
+  h1 {
+    @apply text-5xl md:text-6xl;
+  }
+
+  h2 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h3 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h4 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h5 {
+    @apply text-xl md:text-2xl;
+  }
+
+  h6 {
+    @apply text-lg md:text-xl;
+  }
+
+  a {
+    @apply hover:brightness-150 dark:hover:brightness-50 hover:opacity-40 transition-all duration-300;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Roboto', sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
-  font-variation-settings: 'wdth' 100;
+@utility alert {
+  @apply bg-base-200 border border-base-content;
+}
+
+@utility alert-error {
+  @apply bg-base-200! border! border-error!;
+}
+
+@utility wrapper {
+  @apply min-h-screen flex flex-col justify-between pt-4 px-4;
+
+  nav {
+    @apply px-6 w-full flex justify-between items-center z-50;
+  }
+
+  main {
+    @apply relative w-fit h-full my-auto mx-auto flex flex-col justify-center items-center gap-16 lg:z-50;
+  }
+}
+
+@utility btn {
+  @apply bg-base-300;
+}
+
+@layer components {
 }
