@@ -1,19 +1,11 @@
-import classNames from 'classnames';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useId, useMemo } from 'react';
 import { RxCaretDown } from 'react-icons/rx';
 
 import type { SUPPORTED_TOKENS } from '../contexts/swapToken';
 
-/** Props for the `TokenSelect` component */
 interface TokenSelectProps {
-  /** A record of supported tokens, keyed by their symbol (e.g., "ETH", "USDC") */
   supportedTokens: typeof SUPPORTED_TOKENS;
-  /** The currently selected token symbol */
   selected: keyof typeof SUPPORTED_TOKENS;
-  /**
-   * Callback invoked when a new token is selected.
-   * @param symbol - The symbol of the selected token.
-   */
   onSelect: (symbol: string) => void;
 }
 
@@ -30,7 +22,7 @@ export default function TokenSelect({
   selected,
   onSelect,
 }: TokenSelectProps) {
-  const [open, setOpen] = useState<boolean>(false);
+  const id = useId();
 
   const tokens = useMemo(
     () => Object.entries(supportedTokens),
@@ -42,56 +34,83 @@ export default function TokenSelect({
     [selected, supportedTokens]
   );
 
+  const openModal = useCallback(() => {
+    (document.getElementById(id) as HTMLDialogElement).showModal();
+  }, [id]);
+
+  const closeModal = useCallback(() => {
+    (document.getElementById(id) as HTMLDialogElement).close();
+  }, [id]);
+
   const selectHandler = useCallback(
     (symbol: string) => {
       onSelect(symbol);
-      setOpen(false);
+      closeModal();
     },
-    [onSelect]
+    [closeModal, onSelect]
   );
 
   return (
-    <div className='relative'>
-      <div className='dropdown'>
-        <button
-          className='btn m-1 flex items-center gap-2'
-          aria-expanded={open}
-          aria-haspopup='listbox'
-          onClick={() => setOpen(prev => !prev)}
-        >
-          <div className='w-6 h 6 rounded-full overflow-hidden'>
+    <>
+      <button
+        onClick={openModal}
+        className='btn p-1 max-h-9 flex items-center gap-2'
+      >
+        <div className='relative w-7 h-7'>
+          <div className='w-full h-full rounded-full overflow-hidden'>
             <img src={selectedToken.logoURI} alt={selectedToken.symbol} />
           </div>
-          <span className='hidden md:block'>{selectedToken.symbol}</span>
-          <RxCaretDown size={20} />
-        </button>
-        <ul
-          className={classNames(
-            'menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow',
-            { hidden: !open }
+          {selectedToken.badge && (
+            <img
+              className='absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full'
+              src={selectedToken.badge}
+              alt={selectedToken.chainName}
+            />
           )}
-        >
-          {tokens.map(([symbol, { logoURI, chainName }]) => (
-            <li key={symbol}>
-              <button
-                type='button'
-                className='flex gap-2 items-center'
+        </div>
+        <span className='hidden md:block'>{selectedToken.symbol}</span>
+        <RxCaretDown size={20} />
+      </button>
+
+      <dialog id={id} className='modal'>
+        <div className='modal-box'>
+          <h1 className='text-lg font-bold'>Select a token</h1>
+          <ul className='list bg-base-100 rounded-box shadow-md'>
+            {tokens.map(([symbol, { logoURI, chainName, badge }]) => (
+              <li
+                key={symbol}
                 role='option'
                 aria-selected={selected === symbol}
                 onClick={() => selectHandler(symbol)}
               >
-                <div className='w-6 h-6 rounded-full overflow-hidden'>
-                  <img src={logoURI} alt={symbol} />
+                <div className='list-row cursor-pointer hover:bg-base-300/50 transition-colors duration-300 ease-in-out'>
+                  <div className='relative w-10 h-10'>
+                    <div className='w-full h-full rounded-full overflow-hidden'>
+                      <img src={logoURI} alt={symbol} />
+                    </div>
+                    {badge && (
+                      <img
+                        className='absolute -bottom-1 -right-1 w-4.5 h-4.5 rounded-full'
+                        src={badge}
+                        alt={chainName}
+                      />
+                    )}
+                  </div>
+                  <div className='list-col-grow'>
+                    <div>{symbol}</div>
+                    <div className='text-xs uppercase font-semibold opacity-60'>
+                      {chainName}
+                    </div>
+                  </div>
                 </div>
-                <div className='flex flex-col'>
-                  <span>{symbol}</span>
-                  <span className='text-sm text-neutral-500'>{chainName}</span>
-                </div>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <form method='dialog' className='modal-backdrop'>
+          <button>close</button>
+        </form>
+      </dialog>
+    </>
   );
 }

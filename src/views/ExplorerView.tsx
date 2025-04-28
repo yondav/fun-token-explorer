@@ -2,9 +2,13 @@ import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-import { TokenAmountCard, TokenSwitchButton } from '../components';
+import { TokenCard, TokenSwitchButton } from '../components';
 import { fadeUpStagger, staggerContainer } from '../utils/framerVariants';
 
+/**
+ * Explorer view for swapping tokens.
+ * Includes header, two token cards, a swap button, and a tagline.
+ */
 export default function ExplorerView() {
   const [reversed, setReversed] = useState<boolean>(false);
 
@@ -22,10 +26,7 @@ export default function ExplorerView() {
         viewport={{ once: true, amount: 0.6 }}
         className='flex flex-col gap-4'
       >
-        <motion.h1
-          variants={fadeUpStagger}
-          className='text-5xl md:text-6xl text-center'
-        >
+        <motion.h1 variants={fadeUpStagger} className='text-center'>
           Token Explorer
         </motion.h1>
         <motion.p
@@ -35,7 +36,8 @@ export default function ExplorerView() {
           Compare, calculate, and convert between tokens instantly.
         </motion.p>
       </motion.header>
-      <motion.div
+
+      <motion.section
         variants={staggerContainer}
         initial='initial'
         whileInView='animate'
@@ -45,18 +47,18 @@ export default function ExplorerView() {
           { 'flex-col': !reversed, 'flex-col-reverse': reversed }
         )}
       >
-        <TokenAmountCard type='source' />
-        <TokenAmountCard type='target' />
+        <TokenCard type='source' />
+        <TokenCard type='target' />
         <TokenSwitchButton
           reversed={reversed}
           onToggleLayout={() => setReversed(prev => !prev)}
         />
-      </motion.div>
-      <motion.footer variants={fadeUpStagger}>
-        <p className='text-sm text-neutral-500 text-center italic'>
+      </motion.section>
+      <motion.div variants={fadeUpStagger}>
+        <p className='subtitle'>
           One tool to swap them all. Simple. Instant. Reliable.
         </p>
-      </motion.footer>
+      </motion.div>
     </motion.div>
   );
 }

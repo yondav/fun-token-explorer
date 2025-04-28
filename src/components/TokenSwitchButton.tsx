@@ -5,6 +5,10 @@ import { IoArrowDown } from 'react-icons/io5';
 import { useSwapContext } from '../contexts/swapToken';
 import { fadeUpStagger } from '../utils/framerVariants';
 
+/**
+ * `TokenSwitchButton` is a button component that allows users to switch between source and target tokens in a swap interface.
+ * It uses a rotating arrow icon to indicate the action of switching.
+ */
 interface TokenSwitchButtonProps {
   reversed?: boolean;
   onToggleLayout: () => void;
