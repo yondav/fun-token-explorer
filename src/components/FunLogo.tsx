@@ -1,3 +1,6 @@
+/**
+ * SVG component for the FunLogo.
+ */
 export default function FunLogo() {
   return (
     <svg

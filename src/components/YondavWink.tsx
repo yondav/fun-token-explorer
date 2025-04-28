@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
 import type { SVGProps } from 'react';
 
+/**
+ * Silly easter egg SVG of me winking at the reviewer (hey bud 😎).
+ */
 export default function YondavWink(props: SVGProps<SVGSVGElement>) {
   return (
     <svg

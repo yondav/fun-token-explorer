@@ -1,24 +1,47 @@
-const knowledgeBaseEntries: { title: string; copy: string }[] = [
+interface KnowledgeBaseEntry {
+  title: string;
+  copy: string;
+}
+
+/** List of entries explaining app functionality */
+const knowledgeBaseEntries: KnowledgeBaseEntry[] = [
   {
-    title: 'How it works',
-    copy: 'Enter a dollar amount and use the dropdown menus to select a source and target token. The explorer will calculate the amount you would receive in each token with live updates to reflect token values in real time.',
+    title: 'How It Works',
+    copy: 'Select a source and target token and enter an amount of either currency or USD. The Explorer calculates in real-time how much of each token you would receive.',
   },
   {
-    title: 'Instant Swap',
-    copy: 'Use the swap button to instantly reverse the source and target.',
+    title: 'Dynamic Inputs',
+    copy: 'You can manually edit the USD amount, the source token amount, or the target token amount. The system recalculates all related values instantly depending on which field you are editing.',
   },
   {
-    title: 'Formatting',
-    copy: 'Crypto tokens have different decimal precision. We display a rounded version for easy reading but the full precision can be seen while hovering over a given value.',
+    title: 'Swap Direction',
+    copy: 'Click the swap button between cards to instantly reverse your source and target tokens. All input values adjust seamlessly to reflect the reversed direction.',
+  },
+  {
+    title: 'Decimal Precision',
+    copy: 'Crypto tokens support different numbers of decimal places. Inputs dynamically adjust based on the selected token’s precision, while values are automatically rounded for display and full precision is available on hover.',
+  },
+  {
+    title: 'Real-Time Updates',
+    copy: 'Enable real-time updates in Settings to refresh token pricing dynamically. This ensures your calculations remain accurate, but may incur rate limits depending on API usage.',
+  },
+  {
+    title: 'Theme & Accessibility',
+    copy: 'Choose between Light, Dark, or System theme. The app is optimized with accessible labeling and responsive design for a smooth experience across devices.',
   },
 ];
 
+/**
+ * KnowledgeBase component renders helpful excerpts about how to use the app.
+ */
 export default function KnowledgeBase() {
   return (
-    <article className='flex flex-col gap-4'>
+    <article className='flex flex-col gap-6' aria-label='Knowledge Base'>
       {knowledgeBaseEntries.map((entry, i) => (
-        <section key={i}>
-          <h2 className='font-semibold text-sm mb-2'>{entry.title}</h2>
+        <section key={i} aria-labelledby={`kb-title-${i}`}>
+          <h2 id={`kb-title-${i}`} className='font-semibold text-sm mb-2'>
+            {entry.title}
+          </h2>
           <p className='text-neutral-500'>{entry.copy}</p>
         </section>
       ))}

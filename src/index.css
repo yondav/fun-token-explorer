@@ -174,5 +174,36 @@
   @apply bg-base-300;
 }
 
+@utility side-drawer {
+  .btn-drawer {
+    @apply px-0 py-2 swap swap-rotate rounded-full z-50 cursor-pointer;
+  }
+
+  .drawer-content {
+    @apply flex justify-end;
+  }
+
+  .drawer-overlay {
+    @apply backdrop-blur-xs bg-base-200/50 lg:hidden;
+  }
+
+  .menu {
+    @apply z-40 gap-4 bg-base-200 border-l border-base-300 text-base-content min-h-full w-full md:w-80 p-4 pt-20 overflow-y-auto;
+
+    .collapse {
+      @apply bg-base-200 border border-base-300;
+
+      .collapse-title {
+        @apply font-bold text-lg! flex items-center gap-4;
+      }
+    }
+
+    h2 {
+      @apply text-sm mb-2;
+    }
+  }
+
+}
+
 @layer components {
 }

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useCallback, useMemo, type ReactNode } from 'react';
+import { useCallback, type ReactNode } from 'react';
 import {
   TbAlignBoxCenterMiddle,
   TbAlignBoxCenterMiddleFilled,
@@ -9,6 +9,7 @@ import {
   TbSettings,
 } from 'react-icons/tb';
 
+import { useSwapContext } from '../contexts/swapToken';
 import { useUiSettings } from '../contexts/uiSettings';
 
 import KnowledgeBase from './KnowledgeBase';
@@ -20,32 +21,36 @@ interface SideDrawerToggleProps {
   open: boolean;
 }
 
+/**
+ * Button to toggle the drawer open/closed.
+ * Adjusts icons based on screen size and open state.
+ */
 const SideDrawerToggle = ({ open }: SideDrawerToggleProps) => {
-  const Icon = useCallback(
-    () =>
-      !open ? (
-        <>
-          <TbLayoutSidebarRight size={18} className='hidden md:block' />
-          <TbAlignBoxCenterMiddle size={18} className='md:hidden' />
-        </>
-      ) : (
-        <>
-          <TbLayoutSidebarRightFilled size={18} className='hidden md:block' />
-          <TbAlignBoxCenterMiddleFilled size={18} className='md:hidden' />
-        </>
-      ),
-    [open]
-  );
+  const RenderIcon = useCallback(() => {
+    return open ? (
+      <>
+        <TbLayoutSidebarRightFilled size={18} className='hidden md:block' />
+        <TbAlignBoxCenterMiddleFilled size={18} className='md:hidden' />
+      </>
+    ) : (
+      <>
+        <TbLayoutSidebarRight size={18} className='hidden md:block' />
+        <TbAlignBoxCenterMiddle size={18} className='md:hidden' />
+      </>
+    );
+  }, [open]);
 
   return (
     <motion.label
       htmlFor='drawer'
-      className='drawer-button px-2 py-2 swap swap-rotate rounded-full z-50 cursor-pointer'
+      aria-label='Toggle sidebar'
+      aria-expanded={open}
+      className='drawer-button btn-drawer'
       whileHover={{ scale: 1.065 }}
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.2 }}
     >
-      <Icon />
+      <RenderIcon />
     </motion.label>
   );
 };
@@ -57,60 +62,96 @@ interface SideDrawerItemProps {
   children: ReactNode;
 }
 
+/**
+ * Collapsible section inside the drawer.
+ * Used for menu items.
+ */
 const SideDrawerItem = ({
   name,
   icon,
   label,
   children,
 }: SideDrawerItemProps) => (
-  <div className='collapse bg-base-200 border border-base-300'>
-    <input type='checkbox' name={name} />
-    <div className='collapse-title font-bold flex items-center gap-4'>
+  <div className='collapse'>
+    <input
+      type='checkbox'
+      name={name}
+      id={`${name}-collapse`}
+      aria-controls={`${name}-content`}
+    />
+    <div className='collapse-title' id={`${name}-label`}>
       {icon}
-      <h2>{label}</h2>
+      <h6>{label}</h6>
     </div>
-    <div className='collapse-content'>{children}</div>
+    <div className='collapse-content' id={`${name}-content`}>
+      {children}
+    </div>
   </div>
 );
 
+/**
+ * The main SideDrawer component.
+ */
 export default function SideDrawer() {
   const { sideDrawer, toggleSideDrawer } = useUiSettings();
+  const {
+    state: { realTime },
+    actions: { setRealTime },
+  } = useSwapContext();
 
   return (
-    <div className='drawer drawer-end'>
+    <div className='drawer drawer-end side-drawer'>
       <input
         id='drawer'
         type='checkbox'
         className='drawer-toggle'
         checked={sideDrawer}
         onChange={toggleSideDrawer}
+        aria-label='Toggle sidebar drawer'
+        aria-expanded={sideDrawer}
       />
 
-      <div className='drawer-content flex justify-end'>
-        <motion.label
-          htmlFor='drawer'
-          className='drawer-button px-2 py-2 swap swap-rotate rounded-full z-50 cursor-pointer'
-          whileHover={{ scale: 1.065 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.2 }}
-        >
-          <SideDrawerToggle open={sideDrawer} />
-        </motion.label>
+      <div className='drawer-content'>
+        <SideDrawerToggle open={sideDrawer} />
       </div>
+
       <div className='drawer-side'>
         <label
           htmlFor='drawer'
-          aria-label='close sidebar'
-          className='drawer-overlay lg:hidden'
+          aria-label='Close sidebar'
+          className='drawer-overlay'
         ></label>
-        <div className='menu gap-4 bg-base-200 border-l border-base-300 text-base-content min-h-full w-full md:w-80 p-4 pt-20 overflow-y-auto'>
+
+        <div className='menu'>
           <SideDrawerItem
             name='settings'
             icon={<TbSettings />}
             label='Settings'
           >
-            <h2 className='font-semibold text-sm mb-2'>Theme</h2>
-            <ThemeToggle />
+            <div>
+              <h6>Theme</h6>
+              <ThemeToggle />
+            </div>
+            <div className='divider' />
+            <div>
+              <h6>Real-time updates</h6>
+              <label
+                className='label cursor-pointer gap-2'
+                htmlFor='realtime-toggle'
+              >
+                <input
+                  id='realtime-toggle'
+                  type='checkbox'
+                  checked={realTime}
+                  onChange={e => setRealTime(e.currentTarget.checked)}
+                  className='toggle'
+                  aria-checked={realTime}
+                />
+                <span className='text-xs text-neutral-500'>
+                  Rate limits may apply
+                </span>
+              </label>
+            </div>
           </SideDrawerItem>
 
           <SideDrawerItem
@@ -131,7 +172,7 @@ export default function SideDrawer() {
               <div className='text-center'>
                 <p>Thanks for coming!</p>
                 <a
-                  href='http://yondav.us'
+                  href='https://yondav.us'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
