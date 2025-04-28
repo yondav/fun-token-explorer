@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
-import { TbAlertSquareRounded } from 'react-icons/tb';
+import { TbAlertSquareRounded, TbBrandGithubFilled } from 'react-icons/tb';
 import { Link, Outlet } from 'react-router-dom';
 
-import { FunLogo, SideDrawer } from '../components';
+import { FunLogo, SideDrawer, YondavLogo } from '../components';
 import { useUiSettings } from '../contexts/uiSettings';
 
 /**
@@ -50,6 +50,27 @@ export default function BaseLayout() {
         >
           <Outlet />
         </motion.main>
+        <footer>
+          <span className='copyright'>
+            &#169; yondav {new Date().getFullYear()}
+          </span>
+          <div className='socials'>
+            <a
+              href='https://www.yondav.us/'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <YondavLogo width={18} />
+            </a>
+            <a
+              href='https://github.com/yondav/fun-token-explorer'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <TbBrandGithubFilled size={20} />
+            </a>
+          </div>
+        </footer>
       </div>
     </div>
   );
